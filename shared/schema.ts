@@ -10,8 +10,10 @@ export const dictionaryEntries = pgTable("dictionary_entries", {
   korean: text("korean").notNull(),
   english: text("english").notNull(),
   pronunciation: text("pronunciation").notNull(),
-  partOfSpeech: text("part_of_speech").notNull(), // noun, verb, adjective, etc.
-  examples: jsonb("examples").notNull().default("[]"), // array of example objects
+  partOfSpeech: text("part_of_speech").notNull(),
+  difficulty: text("difficulty").notNull().default("초급"),
+  examples: jsonb("examples").notNull().default("[]"),
+  relatedWords: jsonb("related_words").notNull().default("[]"),
 });
 
 export const exampleSchema = z.object({
@@ -21,8 +23,15 @@ export const exampleSchema = z.object({
   english: z.string(),
 });
 
+export const relatedWordSchema = z.object({
+  mongolianCyrillic: z.string(),
+  mongolianTraditional: z.string(),
+  korean: z.string(),
+});
+
 export const insertDictionaryEntrySchema = createInsertSchema(dictionaryEntries, {
   examples: z.array(exampleSchema),
+  relatedWords: z.array(relatedWordSchema),
 }).omit({
   id: true,
 });
@@ -30,3 +39,4 @@ export const insertDictionaryEntrySchema = createInsertSchema(dictionaryEntries,
 export type InsertDictionaryEntry = z.infer<typeof insertDictionaryEntrySchema>;
 export type DictionaryEntry = typeof dictionaryEntries.$inferSelect;
 export type Example = z.infer<typeof exampleSchema>;
+export type RelatedWord = z.infer<typeof relatedWordSchema>;
