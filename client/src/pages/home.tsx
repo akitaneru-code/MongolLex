@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { type DictionaryEntry } from "@shared/schema";
 import SearchBar from "@/components/search-bar";
 import AlphabetNav from "@/components/alphabet-nav";
 import DictionaryEntryComponent from "@/components/dictionary-entry";
 import ScriptToggle from "@/components/script-toggle";
 import { Button } from "@/components/ui/button";
+import { BookOpen } from "lucide-react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,11 +73,19 @@ export default function Home() {
               </span>
             </div>
             
-            <ScriptToggle 
-              scriptType={scriptType} 
-              onToggle={setScriptType}
-              data-testid="script-toggle"
-            />
+            <div className="flex items-center gap-3">
+              <Link href="/script-guide">
+                <a className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-primary transition-colors border border-gray-200 rounded-lg px-3 py-1.5 hover:border-primary">
+                  <BookOpen className="h-4 w-4" />
+                  <span className="hidden sm:inline">문자 가이드</span>
+                </a>
+              </Link>
+              <ScriptToggle 
+                scriptType={scriptType} 
+                onToggle={setScriptType}
+                data-testid="script-toggle"
+              />
+            </div>
           </div>
           
           <SearchBar 
